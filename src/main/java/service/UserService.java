@@ -21,11 +21,12 @@ public class UserService {
 
     public void run() {
 
-        createDataBase();
-        findByName("UserFN1", "UserLN1").forEach(System.out::println);
-        findByCity("City2").forEach(System.out::println);
-        findByAge(32).forEach(System.out::println);
-        findByAccounts(2).forEach(System.out::println);
+//        createDataBase();
+//        findByName("UserFN1", "UserLN1").forEach(System.out::println);
+//        findByCity("City2").forEach(System.out::println);
+//        findByAge(32).forEach(System.out::println);
+        findByAccountsCount(2).forEach(System.out::println);
+//        updateUserById();
     }
 
     public void createDataBase() {
@@ -90,8 +91,16 @@ public class UserService {
         return userDao.findByAge(age);
     }
 
-    public List<User> findByAccounts(int numberOfAccount) {
+    public List<User> findByAccountsCount(int countOfAccount) {
 
-        return userDao.findByAccounts(numberOfAccount);
+        return userDao.findByAccountsCount(countOfAccount);
+    }
+
+    public void updateUser() {
+
+        User currentUser = userDao.findByName("UserFN2", "UserLN2").get(0);
+        String userId = currentUser.get_id();
+        currentUser.setCity("Kharkiv");
+        userDao.updateUserById(currentUser, userId);
     }
 }

@@ -44,20 +44,11 @@ abstract public class AbstractDao<T> {
         database.deleteMany(filter);
     }
 
-    public void updateData(Bson filter, HashMap<String, String> newData) {
+    public void updateData(T type, Bson filter) {
 
-        final Document updateData = new Document();
-        for (Map.Entry<String, String> entry : newData.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            if (newData.get(key)!=null) {
-                updateData.append(key, value);
-            }
-        }
-
+        final Document updateData = mapperFrom(type);
         final Document updateObject  = new Document();
         updateObject.append("$set", updateData);
-
         database.updateOne(filter, updateObject);
     }
 

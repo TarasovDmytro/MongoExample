@@ -9,6 +9,7 @@ import java.util.List;
 
 public class UserDao extends AbstractDao<User> {
 
+    private final static String USER_ID = "_id";
     private final static String COLLECTION_NAME = "users";
     private final static String FIRST_NAME = "firstName";
     private final static String LAST_NAME = "lastName";
@@ -38,12 +39,14 @@ public class UserDao extends AbstractDao<User> {
         return super.readByFieldsData(Filters.lte(AGE, age), User.class);
     }
 
-    public List<User> findByAccounts(int numberOfAccount) {
+    public List<User> findByAccountsCount(int countOfAccounts) {
 
-        ArrayList<User> result;
-        result = super.readAllData(User.class);
-        return result.stream()
-                .filter((user) -> user.getBankAccount().size() >= 2)
-                .toList();
+        String query = "this.bankAccount.length > " + countOfAccounts;
+        return super.readByFieldsData((Filters.where(query)), User.class);
+    }
+
+    public void updateUserById(User updateUser, String userId) {
+
+        super.updateData(updateUser, (Filters.eq(USER_ID, userId)));
     }
 }
